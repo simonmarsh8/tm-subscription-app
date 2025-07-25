@@ -8,7 +8,7 @@ app.secret_key = os.environ.get("FLASK_SECRET", "change-this-secret")  # Must se
 
 CLIENT_ID = "1395730172250034257"
 CLIENT_SECRET = "uxPEpXUOU27uir2oSxfT75CDjuuaKY6f"
-REDIRECT_URI = "http://127.0.0.1:5000/callback"
+REDIRECT_URI = "https://tm-subscription-app.onrender.com/callback"
 
 MONTHLY_LINK = "https://buy.stripe.com/bJe5kC4cK22O1Bm1G78k800"
 QUARTERLY_LINK = "https://buy.stripe.com/bJe9AS38G4aW4NygB18k801"
