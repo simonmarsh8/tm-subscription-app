@@ -1,3 +1,6 @@
+import stripe  # Make sure this is at the top if not already
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+
 from flask import Flask, redirect, request, session, url_for
 import requests
 from requests.auth import HTTPBasicAuth
@@ -66,8 +69,34 @@ def callback():
     stripe_url = f"{stripe_base}?client_reference_id={discord_id}"
 
     return redirect(stripe_url)
+def assign_discord_role(discord_id):
+    print(f"Assigning Discord role to user {discord_id}")
+    # You'll replace this with actual bot logic later
 
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+@app.route("/webhook", methods=["POST"])
+def stripe_webhook():
+    payload = request.data
+    sig_header = request.headers.get("Stripe-Signature")
+    endpoint_secret = os.getenv("STRIPE_WEBHOOK_SECRET")
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+   except stripe.error.SignatureVerificationError as e:
+    print(f"Webhook signature error: {str(e)}")
+    return "Invalid signature", 400
+
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        discord_id = session.get("client_reference_id")
+        if discord_id:
+            assign_discord_role(discord_id)  # You’ll define this next
+
+    return "Success", 200
+def assign_discord_role(discord_id):
+    print(f"Assigning Discord role to user {discord_id}")
+    # You'll later replace this with actual Discord bot logic
