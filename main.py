@@ -86,9 +86,9 @@ def stripe_webhook():
 
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
-   except stripe.error.SignatureVerificationError as e:
-    print(f"Webhook signature error: {str(e)}")
-    return "Invalid signature", 400
+    except stripe.error.SignatureVerificationError as e:
+        print(f"Webhook signature error: {str(e)}")
+        return "Invalid signature", 400
 
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
