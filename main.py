@@ -1,3 +1,4 @@
+import os
 import stripe  # Make sure this is at the top if not already
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
